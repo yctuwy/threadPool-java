@@ -1,4 +1,4 @@
-package org.example.util;
+package org.example.mypool;
 
 import java.util.ArrayDeque;
 import java.util.Deque;
@@ -51,6 +51,18 @@ public class TaskQueue<T>{
             fullWaitSet.signal();
             return t;
         }finally {
+            queueLock.unlock();
+        }
+    }
+
+    public void tryPut(RejectPolicy<T> rejectPolicy,T task){
+        queueLock.lock();
+        try {
+            if (queue.size()==maxSize){
+                rejectPolicy.reject(this,task);
+            }
+        }finally {
+            queue.addLast(task);
             queueLock.unlock();
         }
     }

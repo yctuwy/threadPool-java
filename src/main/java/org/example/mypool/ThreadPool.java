@@ -1,10 +1,11 @@
-package org.example.util;
+package org.example.mypool;
 
 import java.util.*;
+import java.util.TaskQueue;
 import java.util.concurrent.TimeUnit;
 
 public class ThreadPool {
-    private TaskQueue<Runnable> taskQueue;
+    private java.util.TaskQueue<Runnable> taskQueue;
     private HashSet<ThreadWorker> workers=new HashSet<>();
     //最大线程数
     private Integer coreSize;
@@ -12,12 +13,15 @@ public class ThreadPool {
     private Long timeOut;
     //时间单位
     private TimeUnit timeUnit;
+    //拒绝策略
+    private RejectPolicy<Runnable> rejectPolicy;
     //初始化
-    public ThreadPool(Integer coreSize, Long timeOut, TimeUnit timeUnit, Integer queueMaxSize) {
+    public ThreadPool(Integer coreSize, Long timeOut, TimeUnit timeUnit, Integer queueMaxSize,RejectPolicy<Runnable> rejectPolicy) {
         this.coreSize = coreSize;
         this.timeOut = timeOut;
         this.timeUnit = timeUnit;
-        taskQueue=new TaskQueue<>(queueMaxSize);
+        taskQueue=new java.util.TaskQueue<>(queueMaxSize);
+        this.rejectPolicy=rejectPolicy;
     }
 
     //执行线程
@@ -28,7 +32,7 @@ public class ThreadPool {
                 workers.add(worker);
                 worker.start();
             }else {
-                taskQueue.addTask(task);
+                taskQueue.tryPut(rejectPolicy,task);
             }
         }
 
