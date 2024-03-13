@@ -1,6 +1,7 @@
 package org.example.cas;
 
-import static org.example.util.cas.Account.demo;
+
+import static org.example.cas.Account.demo;
 
 public class TestAccount {
     private static void unsafeTest(){

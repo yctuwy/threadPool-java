@@ -1,6 +1,6 @@
 package org.example.mypool;
 
-import org.example.util.mypool.ThreadPool;
+import org.example.mypool.ThreadPool;
 
 import java.util.concurrent.TimeUnit;
 
