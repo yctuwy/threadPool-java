@@ -1,11 +1,10 @@
 package org.example.mypool;
 
 import java.util.*;
-import java.util.TaskQueue;
 import java.util.concurrent.TimeUnit;
 
 public class ThreadPool {
-    private java.util.TaskQueue<Runnable> taskQueue;
+    private TaskQueue<Runnable> taskQueue;
     private HashSet<ThreadWorker> workers=new HashSet<>();
     //最大线程数
     private Integer coreSize;
@@ -20,7 +19,7 @@ public class ThreadPool {
         this.coreSize = coreSize;
         this.timeOut = timeOut;
         this.timeUnit = timeUnit;
-        taskQueue=new java.util.TaskQueue<>(queueMaxSize);
+        taskQueue=new TaskQueue<>(queueMaxSize);
         this.rejectPolicy=rejectPolicy;
     }
 
